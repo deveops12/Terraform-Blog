@@ -4,8 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-            checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ndahisaac/cloudformation.git']]])            
-
+           git branch: 'main', credentialsId: 'jenkinscfn', url: 'https://github.com/ndahisaac/Terraform-Blog.git'
           }
         }
         
@@ -14,12 +13,21 @@ pipeline {
                 sh ('terraform init') 
             }
         }
-        
-        stage ("terraform Action") {
+         stage ("terraform plan") {
             steps {
-                echo "Terraform action is --> ${action}"
-                sh ('terraform ${action} --auto-approve') 
-           }
+                sh ('terraform plan') 
+            }
+        }
+          stage ("terraform plan") {
+            steps {
+                sh ('terraform plan') 
+            }
+        }
+         stage ("terraform Action") {
+            steps {
+                sh ('terraform ${apply --auto-approve')
+            }
         }
     }
 }
+        
